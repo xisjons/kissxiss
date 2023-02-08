@@ -13,10 +13,29 @@
           background: #ffd633;
         }
       }
+      
+      .rotate-button {
+        width: 50px;
+        height: 50px;
+        background-color: blue;
+        border-radius: 25px;
+        text-align: center;
+        line-height: 50px;
+        color: white;
+        transition: transform 0.2s ease-in-out;
+        cursor: pointer;
+      }
+      
+      .rotate-button:hover {
+        transform: rotate(360deg);
+      }
     </style>
   </head>
   <body>
     <h1>Hello World!</h1>
     <p>This is an example HTML page with a gradient background.</p>
+    <a href="https://vk.com">
+      <div class="rotate-button">Go to VK</div>
+    </a>
   </body>
 </html>
