@@ -1,5 +1,4 @@
 # kissxiss
-div {
-height: 200px;
-background: linear-gradient(to top left, powderblue, pink);
-}
+<div class="notice-success">
+  Ура! Поздравляем, вы сделали это!
+</div>
