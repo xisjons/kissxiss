@@ -1,4 +1,5 @@
 # kissxiss
-тестовая страница 1
-<h1>Это мой сайт</h1>
-<h2>Первая секция</h2>
+div {
+height: 200px;
+background: linear-gradient(to top left, powderblue, pink);
+}
