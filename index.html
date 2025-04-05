@@ -3,16 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XisJons</title>
+    <title>Персональная страница</title>
     <style>
-        :root {
-            --primary: #6e45e2;
-            --secondary: #88d3ce;
-            --accent: #ff7e5f;
-            --text: #f8f9fa;
-            --dark: #1a1a2e;
-        }
-        
         * {
             margin: 0;
             padding: 0;
@@ -20,345 +12,231 @@
         }
         
         body {
-            font-family: 'Montserrat', sans-serif;
-            color: var(--text);
             overflow: hidden;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            color: white;
             height: 100vh;
-            perspective: 1000px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
         }
         
-        #bg-canvas {
+        #canvas {
             position: fixed;
             top: 0;
             left: 0;
-            z-index: -1;
             width: 100%;
             height: 100%;
-        }
-        
-        .container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 2rem;
-            position: relative;
             z-index: 1;
         }
         
-        .card {
-            background: rgba(26, 26, 46, 0.85);
-            backdrop-filter: blur(12px);
-            border-radius: 24px;
-            padding: 3rem;
-            width: 100%;
-            max-width: 800px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
-            border: 1px solid rgba(255, 255, 255, 0.1);
+        .content {
+            position: relative;
+            z-index: 2;
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            animation: fadeIn 1.5s ease-out, float 6s ease-in-out infinite;
             transform-style: preserve-3d;
-            transition: transform 0.5s ease;
+            perspective: 1000px;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotateY(0deg); }
+            50% { transform: translateY(-20px) rotateY(5deg); }
         }
         
         .profile {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-bottom: 2.5rem;
+            gap: 25px;
         }
         
-        .avatar {
+        .photo-container {
+            position: relative;
             width: 180px;
             height: 180px;
             border-radius: 50%;
-            object-fit: cover;
-            border: 5px solid var(--primary);
-            box-shadow: 0 10px 30px rgba(110, 69, 226, 0.4);
-            margin-bottom: 1.5rem;
-            transition: all 0.3s ease;
+            overflow: hidden;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
+                        inset 0 0 20px rgba(255, 255, 255, 0.2);
+            animation: photoGlow 4s ease-in-out infinite alternate;
+            transform-style: preserve-3d;
         }
         
-        .avatar:hover {
-            transform: scale(1.05);
-            box-shadow: 0 15px 40px rgba(110, 69, 226, 0.6);
+        @keyframes photoGlow {
+            0% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
+                             inset 0 0 20px rgba(255, 255, 255, 0.2),
+                             0 0 10px rgba(100, 149, 237, 0); }
+            100% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
+                             inset 0 0 20px rgba(255, 255, 255, 0.2),
+                             0 0 30px rgba(100, 149, 237, 0.8); }
+        }
+        
+        .photo {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+        
+        .photo-container:hover .photo {
+            transform: scale(1.1) rotateZ(5deg);
+        }
+        
+        .photo-container::after {
+            content: '';
+            position: absolute;
+            bottom: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom, 
+                transparent 0%, 
+                rgba(255, 255, 255, 0.1) 50%, 
+                transparent 100%
+            );
+            transform: rotate(45deg);
+            animation: reflection 6s ease-in-out infinite;
+        }
+        
+        @keyframes reflection {
+            0% { transform: rotate(45deg) translateX(-100%); }
+            100% { transform: rotate(45deg) translateX(100%); }
+        }
+        
+        .info {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
         
         h1 {
-            font-size: 2.5rem;
-            margin-bottom: 0.5rem;
-            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            font-size: 2.2rem;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+            background: linear-gradient(90deg, #ffffff, #a7d2ff);
             -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            text-align: center;
+            background-clip: text;
+            color: transparent;
+            animation: textShine 3s ease-in-out infinite alternate;
         }
         
-        .title {
-            font-size: 1.2rem;
-            color: var(--secondary);
-            margin-bottom: 2rem;
-            text-align: center;
-            font-weight: 500;
-        }
-        
-        .contacts {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 2.5rem;
+        @keyframes textShine {
+            0% { background-position: 0% 50%; }
+            100% { background-position: 100% 50%; }
         }
         
         .contact-item {
             display: flex;
             align-items: center;
-            padding: 1rem;
+            justify-content: center;
+            gap: 10px;
+            font-size: 1.1rem;
+            padding: 10px 20px;
             background: rgba(255, 255, 255, 0.05);
-            border-radius: 12px;
+            border-radius: 50px;
             transition: all 0.3s ease;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
         .contact-item:hover {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateY(-5px);
+            background: rgba(255, 255, 255, 0.15);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
         
-        .contact-icon {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            border-radius: 50%;
-            margin-right: 1rem;
-            font-size: 1.5rem;
+        .contact-item i {
+            font-size: 1.3rem;
+            color: #6495ed;
         }
         
-        .contact-text {
-            display: flex;
-            flex-direction: column;
+        .pulse {
+            animation: pulse 2s infinite;
         }
         
-        .contact-label {
-            font-size: 0.8rem;
-            color: var(--secondary);
-            margin-bottom: 0.2rem;
-        }
-        
-        .contact-value {
-            font-size: 1rem;
-            font-weight: 500;
-        }
-        
-        .social-links {
-            display: flex;
-            justify-content: center;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-        
-        .social-link {
-            width: 50px;
-            height: 50px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50%;
-            font-size: 1.5rem;
-            color: var(--text);
-            transition: all 0.3s ease;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .social-link::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, var(--primary), var(--accent));
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .social-link:hover {
-            transform: translateY(-5px) scale(1.1);
-            box-shadow: 0 10px 20px rgba(110, 69, 226, 0.3);
-        }
-        
-        .social-link:hover::before {
-            opacity: 1;
-        }
-        
-        .social-link i {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .cursor-follower {
-            position: fixed;
-            width: 30px;
-            height: 30px;
-            border-radius: 50%;
-            background: radial-gradient(circle, var(--accent), transparent 70%);
-            pointer-events: none;
-            z-index: 9999;
-            transform: translate(-50%, -50%);
-            mix-blend-mode: screen;
-        }
-        
-        @media (max-width: 768px) {
-            .card {
-                padding: 2rem 1.5rem;
-            }
-            
-            .contacts {
-                grid-template-columns: 1fr;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <canvas id="bg-canvas"></canvas>
-    <div class="cursor-follower"></div>
+    <canvas id="canvas"></canvas>
     
-    <div class="container">
-        <div class="card" id="card">
-            <div class="profile">
-                <img src="https://sun9-68.userapi.com/impf/c849120/v849120466/107ab3/HSNIeCwPahQ.jpg?size=640x640&quality=96&sign=a4e567656e12e81b63b160214527bcaf&type=album" alt="Фото профиля" class="avatar">
+    <div class="content">
+        <div class="profile">
+            <div class="photo-container">
+                <img src="https://sun9-68.userapi.com/impf/c849120/v849120466/107ab3/HSNIeCwPahQ.jpg?size=640x640&quality=96&sign=a4e567656e12e81b63b160214527bcaf&type=album" alt="Фото" class="photo">
+            </div>
+            
+            <div class="info">
                 <h1>Хисамов Айбулат Илгамович</h1>
-                <div class="title">XisJons</div>
-            </div>
-            
-            <div class="contacts">
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-phone"></i>
-                    </div>
-                    <div class="contact-text">
-                        <span class="contact-label">Телефон</span>
-                        <span class="contact-value">+7 (937) 786-86-69</span>
-                    </div>
+                
+                <div class="contact-item pulse">
+                    <i class="fas fa-phone-alt"></i>
+                    <span>+7 (937) 786-86-69</span>
                 </div>
                 
                 <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-envelope"></i>
-                    </div>
-                    <div class="contact-text">
-                        <span class="contact-label">Email</span>
-                        <span class="contact-value">xisjons@gmail.com</span>
-                    </div>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>Стерлитамак, Россия</span>
                 </div>
-                
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-map-marker-alt"></i>
-                    </div>
-                    <div class="contact-text">
-                        <span class="contact-label">Локация</span>
-                        <span class="contact-value">Стерлитамак, Россия</span>
-                    </div>
-                </div>
-                
-                <div class="contact-item">
-                    <div class="contact-icon">
-                        <i class="fas fa-calendar-alt"></i>
-                    </div>
-                    <div class="contact-text">
-                        <span class="contact-label">Доступен</span>
-                        <span class="contact-value">Пн-Пт, 17:00-21:00</span>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="social-links">
-                <a href="#" class="social-link" target="_blank">
-                    <i class="fab fa-vk"></i>
-                </a>
-                <a href="#" class="social-link" target="_blank">
-                    <i class="fab fa-telegram"></i>
-                </a>
-                <a href="#" class="social-link" target="_blank">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="#" class="social-link" target="_blank">
-                    <i class="fab fa-linkedin-in"></i>
-                </a>
-                <a href="#" class="social-link" target="_blank">
-                    <i class="fab fa-instagram"></i>
-                </a>
             </div>
         </div>
     </div>
 
     <script>
-        // Инициализация canvas
-        const canvas = document.getElementById('bg-canvas');
+        // Canvas setup
+        const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
+        
+        // Set canvas to full window size
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
         
-        // Настройки частиц
-        const particles = [];
-        const particleCount = Math.floor(window.innerWidth / 10);
-        const colors = ['#6e45e2', '#88d3ce', '#ff7e5f', '#f8f9fa'];
-        
-        // Создание частиц
+        // Particle class
         class Particle {
             constructor() {
                 this.x = Math.random() * canvas.width;
                 this.y = Math.random() * canvas.height;
                 this.size = Math.random() * 3 + 1;
-                this.color = colors[Math.floor(Math.random() * colors.length)];
-                this.speedX = Math.random() * 1 - 0.5;
-                this.speedY = Math.random() * 1 - 0.5;
-                this.originalX = this.x;
-                this.originalY = this.y;
-                this.density = Math.random() * 30 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.color = `hsl(${Math.random() * 60 + 200}, 80%, 60%)`;
+                this.opacity = Math.random() * 0.6 + 0.2;
             }
             
-            update(mouse) {
-                // Движение частиц
+            update() {
                 this.x += this.speedX;
                 this.y += this.speedY;
                 
-                // Отталкивание от границ
+                // Bounce off walls
                 if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
                 if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
                 
-                // Взаимодействие с курсором
-                if (mouse.x && mouse.y) {
-                    const dx = mouse.x - this.x;
-                    const dy = mouse.y - this.y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    const forceDirectionX = dx / distance;
-                    const forceDirectionY = dy / distance;
-                    const maxDistance = 100;
-                    const force = (maxDistance - distance) / maxDistance;
-                    
-                    if (distance < maxDistance) {
-                        this.x -= forceDirectionX * force * this.density;
-                        this.y -= forceDirectionY * force * this.density;
-                    } else {
-                        // Возвращение в исходное положение
-                        if (this.x !== this.originalX) {
-                            const dx = this.originalX - this.x;
-                            this.x += dx / 10;
-                        }
-                        if (this.y !== this.originalY) {
-                            const dy = this.originalY - this.y;
-                            this.y += dy / 10;
-                        }
-                    }
+                // Random direction changes
+                if (Math.random() < 0.05) {
+                    this.speedX = Math.random() * 2 - 1;
+                    this.speedY = Math.random() * 2 - 1;
                 }
             }
             
@@ -366,90 +244,95 @@
                 ctx.beginPath();
                 ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
                 ctx.fillStyle = this.color;
+                ctx.globalAlpha = this.opacity;
                 ctx.fill();
+                ctx.closePath();
+                
+                // Glow effect
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
+                const gradient = ctx.createRadialGradient(
+                    this.x, this.y, this.size * 0.5,
+                    this.x, this.y, this.size * 2
+                );
+                gradient.addColorStop(0, this.color);
+                gradient.addColorStop(1, 'transparent');
+                ctx.fillStyle = gradient;
+                ctx.fill();
+                ctx.closePath();
             }
         }
         
-        // Инициализация частиц
-        function init() {
-            for (let i = 0; i < particleCount; i++) {
-                particles.push(new Particle());
-            }
+        // Create particles
+        const particles = [];
+        const particleCount = window.innerWidth < 768 ? 50 : 100;
+        
+        for (let i = 0; i < particleCount; i++) {
+            particles.push(new Particle());
         }
         
-        // Соединения между частицами
-        function connect() {
+        // Animation loop
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            
+            // Draw connections between close particles
             for (let i = 0; i < particles.length; i++) {
-                for (let j = i; j < particles.length; j++) {
+                for (let j = i + 1; j < particles.length; j++) {
                     const dx = particles[i].x - particles[j].x;
                     const dy = particles[i].y - particles[j].y;
                     const distance = Math.sqrt(dx * dx + dy * dy);
                     
-                    if (distance < 100) {
+                    if (distance < 150) {
+                        const opacity = 1 - distance / 150;
                         ctx.beginPath();
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${1 - distance / 100})`;
-                        ctx.lineWidth = 0.5;
+                        ctx.strokeStyle = `rgba(100, 149, 237, ${opacity * 0.3})`;
+                        ctx.lineWidth = 1;
                         ctx.moveTo(particles[i].x, particles[i].y);
                         ctx.lineTo(particles[j].x, particles[j].y);
                         ctx.stroke();
+                        ctx.closePath();
                     }
                 }
             }
-        }
-        
-        // Анимация
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
             
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update(mouse);
-                particles[i].draw();
-            }
+            // Update and draw particles
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
             
-            connect();
             requestAnimationFrame(animate);
         }
         
-        // Взаимодействие с мышью
-        const mouse = {
-            x: null,
-            y: null
-        };
+        animate();
         
-        window.addEventListener('mousemove', (e) => {
-            mouse.x = e.x;
-            mouse.y = e.y;
-        });
-        
-        // Слежение курсора
-        const cursorFollower = document.querySelector('.cursor-follower');
-        document.addEventListener('mousemove', (e) => {
-            cursorFollower.style.left = e.clientX + 'px';
-            cursorFollower.style.top = e.clientY + 'px';
-        });
-        
-        // 3D эффект для карточки
-        const card = document.getElementById('card');
-        document.addEventListener('mousemove', (e) => {
-            const xAxis = (window.innerWidth / 2 - e.pageX) / 25;
-            const yAxis = (window.innerHeight / 2 - e.pageY) / 25;
-            card.style.transform = `rotateY(${xAxis}deg) rotateX(${yAxis}deg)`;
-        });
-        
-        // Сброс при уходе курсора
-        document.addEventListener('mouseleave', () => {
-            card.style.transform = 'rotateY(0deg) rotateX(0deg)';
-        });
-        
-        // Реакция на изменение размера окна
+        // Handle window resize
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
         });
         
-        // Запуск
-        init();
-        animate();
+        // Add interactive mouse effect
+        let mouseX = null;
+        let mouseY = null;
+        
+        window.addEventListener('mousemove', (event) => {
+            mouseX = event.x;
+            mouseY = event.y;
+            
+            // Push particles away from mouse
+            particles.forEach(particle => {
+                const dx = particle.x - mouseX;
+                const dy = particle.y - mouseY;
+                const distance = Math.sqrt(dx * dx + dy * dy);
+                
+                if (distance < 100) {
+                    const force = (100 - distance) / 50;
+                    particle.speedX += dx / distance * force * 0.2;
+                    particle.speedY += dy / distance * force * 0.2;
+                }
+            });
+        });
     </script>
 </body>
 </html>
