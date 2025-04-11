@@ -1,338 +1,224 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Персональная страница</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            overflow: hidden;
-            font-family: 'Arial', sans-serif;
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            color: white;
-            height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-        
-        #canvas {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-        
-        .content {
-            position: relative;
-            z-index: 2;
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 20px;
-            padding: 40px;
-            width: 80%;
-            max-width: 600px;
-            box-shadow: 0 25px 45px rgba(0, 0, 0, 0.2);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            animation: fadeIn 1.5s ease-out, float 6s ease-in-out infinite;
-            transform-style: preserve-3d;
-            perspective: 1000px;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(50px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotateY(0deg); }
-            50% { transform: translateY(-20px) rotateY(5deg); }
-        }
-        
-        .profile {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 25px;
-        }
-        
-        .photo-container {
-            position: relative;
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            overflow: hidden;
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
-                        inset 0 0 20px rgba(255, 255, 255, 0.2);
-            animation: photoGlow 4s ease-in-out infinite alternate;
-            transform-style: preserve-3d;
-        }
-        
-        @keyframes photoGlow {
-            0% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
-                             inset 0 0 20px rgba(255, 255, 255, 0.2),
-                             0 0 10px rgba(100, 149, 237, 0); }
-            100% { box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3), 
-                             inset 0 0 20px rgba(255, 255, 255, 0.2),
-                             0 0 30px rgba(100, 149, 237, 0.8); }
-        }
-        
-        .photo {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s;
-        }
-        
-        .photo-container:hover .photo {
-            transform: scale(1.1) rotateZ(5deg);
-        }
-        
-        .photo-container::after {
-            content: '';
-            position: absolute;
-            bottom: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: linear-gradient(
-                to bottom, 
-                transparent 0%, 
-                rgba(255, 255, 255, 0.1) 50%, 
-                transparent 100%
-            );
-            transform: rotate(45deg);
-            animation: reflection 6s ease-in-out infinite;
-        }
-        
-        @keyframes reflection {
-            0% { transform: rotate(45deg) translateX(-100%); }
-            100% { transform: rotate(45deg) translateX(100%); }
-        }
-        
-        .info {
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        h1 {
-            font-size: 2.2rem;
-            margin-bottom: 5px;
-            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
-            background: linear-gradient(90deg, #ffffff, #a7d2ff);
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: textShine 3s ease-in-out infinite alternate;
-        }
-        
-        @keyframes textShine {
-            0% { background-position: 0% 50%; }
-            100% { background-position: 100% 50%; }
-        }
-        
-        .contact-item {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 1.1rem;
-            padding: 10px 20px;
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        
-        .contact-item:hover {
-            background: rgba(255, 255, 255, 0.15);
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-        }
-        
-        .contact-item i {
-            font-size: 1.3rem;
-            color: #6495ed;
-        }
-        
-        .pulse {
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.1); }
-            100% { transform: scale(1); }
-        }
-    </style>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Woow-кнопка</title>
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      height: 100%;
+      background: #0b1f2a;
+    }
+
+    body::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: radial-gradient(circle at center, #1e3a5f 0%, #0b1f2a 100%);
+      animation: backgroundMove 25s ease-in-out infinite alternate;
+      z-index: 0;
+      opacity: 0.5;
+    }
+
+    @keyframes backgroundMove {
+      0% { transform: translate(0%, 0%) scale(1); }
+      50% { transform: translate(10%, 10%) scale(1.05); }
+      100% { transform: translate(-10%, -5%) scale(1); }
+    }
+
+    canvas {
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    .eclipse-button {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 150px;
+      height: 150px;
+      background: #000;
+      border-radius: 50%;
+      transform: translate(-50%, -50%);
+      box-shadow: 0 0 40px 20px rgba(255, 255, 255, 0.15),
+                  0 0 80px 40px rgba(255, 255, 255, 0.05);
+      animation: glowPulse 1s ease-in-out infinite;
+      z-index: 2;
+      border: none;
+      cursor: pointer;
+      transition: transform 0.2s ease-in-out;
+    }
+
+    @keyframes glowPulse {
+      0%, 100% {
+        box-shadow: 0 0 40px 20px rgba(255, 255, 255, 0.15),
+                    0 0 80px 40px rgba(255, 255, 255, 0.05);
+      }
+      50% {
+        box-shadow: 0 0 60px 30px rgba(255, 255, 255, 0.25),
+                    0 0 100px 50px rgba(255, 255, 255, 0.1);
+      }
+    }
+
+    .explode {
+      animation: explodeAnim 0.5s forwards;
+    }
+
+    .rebuild {
+      animation: rebuildAnim 0.5s forwards;
+    }
+
+    @keyframes explodeAnim {
+      0% { transform: translate(-50%, -50%) scale(1); opacity: 1; filter: blur(0); }
+      100% { transform: translate(-50%, -50%) scale(3); opacity: 0; filter: blur(15px); }
+    }
+
+    @keyframes rebuildAnim {
+      0% { transform: translate(-50%, -50%) scale(3); opacity: 0; filter: blur(15px); }
+      100% { transform: translate(-50%, -50%) scale(1); opacity: 1; filter: blur(0); }
+    }
+
+    .woow-image {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 150px;
+      height: auto;
+      z-index: 2;
+      opacity: 0;
+      transition: opacity 0.3s ease-in-out;
+      pointer-events: auto;
+      cursor: pointer;
+    }
+
+    .woow-visible {
+      opacity: 1;
+    }
+  </style>
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    
-    <div class="content">
-        <div class="profile">
-            <div class="photo-container">
-                <img src="https://sun9-2.userapi.com/impg/FvWyvu5AeWWTzKbCqaxTPc-bE_rkWoMncTYihg/y4itN8Tq-GQ.jpg?size=640x640&quality=95&sign=5cff71800ac74c82803670f009791fbd&type=album" alt="Фото" class="photo">
-            </div>
-            
-            <div class="info">
-                <h1><a href="https://vk.com/xisjons" style="text-decoration: none; color: inherit;">Хисамов Айбулат Илгамович</a></h1>
-                
-                <div class="contact-item pulse">
-                    <i class="fas fa-phone-alt"></i>
-                    <span>+7 (937) 786-86-69</span>
-                </div>
-                
-                <div class="contact-item">
-                    <i class="fas fa-map-marker-alt"></i>
-                    <span>Стерлитамак, Россия</span>
-                </div>
-            </div>
-        </div>
-    </div>
+<canvas id="canvas"></canvas>
+<div class="eclipse-button" id="explodeBtn"></div>
+<img class="woow-image" id="woowImage" src="https://www.donationalerts.com/img/header/logo.svg" alt="woow" />
 
-    <script>
-        // Canvas setup
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
-        
-        // Set canvas to full window size
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        
-        // Particle class
-        class Particle {
-            constructor() {
-                this.x = Math.random() * canvas.width;
-                this.y = Math.random() * canvas.height;
-                this.size = Math.random() * 3 + 1;
-                this.speedX = Math.random() * 2 - 1;
-                this.speedY = Math.random() * 2 - 1;
-                this.color = `hsl(${Math.random() * 60 + 200}, 80%, 60%)`;
-                this.opacity = Math.random() * 0.6 + 0.2;
-            }
-            
-            update() {
-                this.x += this.speedX;
-                this.y += this.speedY;
-                
-                // Bounce off walls
-                if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
-                if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
-                
-                // Random direction changes
-                if (Math.random() < 0.05) {
-                    this.speedX = Math.random() * 2 - 1;
-                    this.speedY = Math.random() * 2 - 1;
-                }
-            }
-            
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-                ctx.fillStyle = this.color;
-                ctx.globalAlpha = this.opacity;
-                ctx.fill();
-                ctx.closePath();
-                
-                // Glow effect
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
-                const gradient = ctx.createRadialGradient(
-                    this.x, this.y, this.size * 0.5,
-                    this.x, this.y, this.size * 2
-                );
-                gradient.addColorStop(0, this.color);
-                gradient.addColorStop(1, 'transparent');
-                ctx.fillStyle = gradient;
-                ctx.fill();
-                ctx.closePath();
-            }
+<script>
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  const btn = document.getElementById('explodeBtn');
+  const woowImage = document.getElementById('woowImage');
+
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+
+  let particles = [];
+  const particleCount = 300;
+  const maxDistance = 100;
+
+  class Particle {
+    constructor() {
+      this.x = Math.random() * canvas.width;
+      this.y = Math.random() * canvas.height;
+      this.vx = (Math.random() - 0.5) * 0.6;
+      this.vy = (Math.random() - 0.5) * 0.6;
+      this.radius = 1.5;
+      this.opacity = Math.random();
+      this.fadeDirection = Math.random() > 0.5 ? 1 : -1;
+    }
+
+    update() {
+      this.x += this.vx;
+      this.y += this.vy;
+
+      if (this.x <= 0 || this.x >= canvas.width) this.vx *= -1;
+      if (this.y <= 0 || this.y >= canvas.height) this.vy *= -1;
+
+      this.opacity += 0.01 * this.fadeDirection;
+      if (this.opacity <= 0) {
+        this.opacity = 0;
+        this.fadeDirection = 1;
+      } else if (this.opacity >= 1) {
+        this.opacity = 1;
+        this.fadeDirection = -1;
+      }
+    }
+
+    draw() {
+      ctx.beginPath();
+      ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(255, 255, 255, ${this.opacity})`;
+      ctx.fill();
+    }
+  }
+
+  function initParticles() {
+    particles = [];
+    for (let i = 0; i < particleCount; i++) {
+      particles.push(new Particle());
+    }
+  }
+
+  function connectParticles() {
+    for (let i = 0; i < particleCount; i++) {
+      for (let j = i + 1; j < particleCount; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const distance = Math.sqrt(dx * dx + dy * dy);
+        const opacityFactor = particles[i].opacity * particles[j].opacity;
+
+        if (distance < maxDistance && opacityFactor > 0.1) {
+          ctx.beginPath();
+          ctx.moveTo(particles[i].x, particles[i].y);
+          ctx.lineTo(particles[j].x, particles[j].y);
+          ctx.strokeStyle = `rgba(255, 255, 255, ${(1 - distance / maxDistance) * opacityFactor})`;
+          ctx.lineWidth = 0.7;
+          ctx.stroke();
         }
-        
-        // Create particles
-        const particles = [];
-        const particleCount = window.innerWidth < 768 ? 50 : 100;
-        
-        for (let i = 0; i < particleCount; i++) {
-            particles.push(new Particle());
-        }
-        
-        // Animation loop
-        function animate() {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-            
-            // Draw connections between close particles
-            for (let i = 0; i < particles.length; i++) {
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 150) {
-                        const opacity = 1 - distance / 150;
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(100, 149, 237, ${opacity * 0.3})`;
-                        ctx.lineWidth = 1;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                        ctx.closePath();
-                    }
-                }
-            }
-            
-            // Update and draw particles
-            particles.forEach(particle => {
-                particle.update();
-                particle.draw();
-            });
-            
-            requestAnimationFrame(animate);
-        }
-        
-        animate();
-        
-        // Handle window resize
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-        });
-        
-        // Add interactive mouse effect
-        let mouseX = null;
-        let mouseY = null;
-        
-        window.addEventListener('mousemove', (event) => {
-            mouseX = event.x;
-            mouseY = event.y;
-            
-            // Push particles away from mouse
-            particles.forEach(particle => {
-                const dx = particle.x - mouseX;
-                const dy = particle.y - mouseY;
-                const distance = Math.sqrt(dx * dx + dy * dy);
-                
-                if (distance < 100) {
-                    const force = (100 - distance) / 50;
-                    particle.speedX += dx / distance * force * 0.2;
-                    particle.speedY += dy / distance * force * 0.2;
-                }
-            });
-        });
-    </script>
+      }
+    }
+  }
+
+  function animate() {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    for (let p of particles) {
+      p.update();
+      p.draw();
+    }
+    connectParticles();
+    requestAnimationFrame(animate);
+  }
+
+  window.addEventListener('resize', () => {
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    initParticles();
+  });
+
+  btn.addEventListener('mouseenter', () => {
+    btn.classList.remove('rebuild');
+    btn.classList.add('explode');
+    woowImage.classList.add('woow-visible');
+
+    setTimeout(() => {
+      btn.classList.remove('explode');
+      btn.classList.add('rebuild');
+      woowImage.classList.remove('woow-visible');
+    }, 500);
+  });
+
+  woowImage.addEventListener('click', () => {
+    window.open('https://www.donationalerts.ru', '_blank');
+  });
+
+  initParticles();
+  animate();
+</script>
 </body>
 </html>
