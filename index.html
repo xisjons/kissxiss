@@ -2,21 +2,26 @@
 <html lang="ru">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Woow-кнопка</title>
   <style>
+    :root {
+      --button-size: 10vmin;
+      --image-size: 10vmin;
+    }
+
     html, body {
       margin: 0;
       padding: 0;
       height: 100%;
       background: #0b1f2a;
       font-family: sans-serif;
-      overflow: auto;
+      overflow: hidden;
     }
 
     body::before {
       content: '';
-      position: absolute;
+      position: fixed;
       top: -50%;
       left: -50%;
       width: 200%;
@@ -25,6 +30,7 @@
       animation: backgroundMove 25s ease-in-out infinite alternate;
       z-index: 0;
       opacity: 0.5;
+      pointer-events: none;
     }
 
     @keyframes backgroundMove {
@@ -41,17 +47,18 @@
       z-index: 1;
     }
 
-    .eclipse-button {
+    button.eclipse-button {
       position: absolute;
       top: 50%;
       left: 50%;
-      width: 150px;
-      height: 150px;
+      width: var(--button-size);
+      height: var(--button-size);
       background: #000;
       border-radius: 50%;
       transform: translate(-50%, -50%);
-      box-shadow: 0 0 40px 20px rgba(255, 255, 255, 0.15),
-                  0 0 80px 40px rgba(255, 255, 255, 0.05);
+      box-shadow:
+        0 0 4vmin 2vmin rgba(255, 255, 255, 0.15),
+        0 0 8vmin 4vmin rgba(255, 255, 255, 0.05);
       animation: glowPulse 1s ease-in-out infinite;
       z-index: 2;
       border: none;
@@ -61,12 +68,18 @@
 
     @keyframes glowPulse {
       0%, 100% {
-        box-shadow: 0 0 40px 20px rgba(255, 255, 255, 0.15),
-                    0 0 80px 40px rgba(255, 255, 255, 0.05);
+        box-shadow:
+          0 0 4vmin 2vmin rgba(255, 255, 255, 0.15),
+          0 0 8vmin 4vmin rgba(255, 255, 255, 0.05);
+        transform: translate(-50%, -50%) scale(1);
+        background-color: #000;
       }
       50% {
-        box-shadow: 0 0 60px 30px rgba(255, 255, 255, 0.25),
-                    0 0 100px 50px rgba(255, 255, 255, 0.1);
+        box-shadow:
+          0 0 5vmin 3vmin rgba(255, 0, 0, 0.4),
+          0 0 10vmin 6vmin rgba(255, 0, 0, 0.2);
+        transform: translate(-50%, -50%) scale(1.15);
+        background-color: #220000;
       }
     }
 
@@ -93,9 +106,9 @@
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
-      width: 150px;
+      width: var(--image-size);
       height: auto;
-      z-index: 2;
+      z-index: 5;
       opacity: 0;
       transition: opacity 0.3s ease-in-out;
       pointer-events: auto;
@@ -106,32 +119,58 @@
       opacity: 1;
     }
 
-    /* Адаптив под мобильные */
     @media (max-width: 768px) {
-      .eclipse-button {
-        width: 100px;
-        height: 100px;
-      }
-      .woow-image {
-        width: 100px;
+      :root {
+        --button-size: 16vmin;
+        --image-size: 16vmin;
       }
     }
 
     @media (max-width: 480px) {
-      .eclipse-button {
-        width: 80px;
-        height: 80px;
+      :root {
+        --button-size: 20vmin;
+        --image-size: 20vmin;
       }
-      .woow-image {
-        width: 80px;
+    }
+
+    .woow-title {
+      position: absolute;
+      top: 10%;
+      left: 50%;
+      transform: translateX(-50%);
+      color: #ffffff;
+      font-size: 4vmin;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      z-index: 3;
+      text-shadow: 0 0 10px rgba(255,255,255,0.4), 0 0 20px rgba(255,255,255,0.2);
+      animation: fadeInText 2s ease-out;
+      pointer-events: none;
+    }
+
+    @keyframes fadeInText {
+      from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10%);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .woow-title {
+        font-size: 6vmin;
       }
     }
   </style>
 </head>
 <body>
   <canvas id="canvas"></canvas>
-  <div class="eclipse-button" id="explodeBtn"></div>
-  <img class="woow-image" id="woowImage" src="https://www.donationalerts.com/img/header/logo.svg" alt="woow" />
+  <h1 class="woow-title">Нажми и удивись!</h1>
+  <button class="eclipse-button" id="explodeBtn" aria-label="Woow button" role="button"></button>
+  <img class="woow-image" id="woowImage" src="https://www.donationalerts.com/img/header/logo.svg" alt="Woow logo" />
 
   <script>
     const canvas = document.getElementById('canvas');
@@ -143,6 +182,11 @@
       canvas.width = window.innerWidth;
       canvas.height = window.innerHeight;
     }
+
+    window.addEventListener('resize', () => {
+      resizeCanvas();
+      initParticles();
+    });
 
     resizeCanvas();
 
@@ -223,12 +267,6 @@
       requestAnimationFrame(animate);
     }
 
-    window.addEventListener('resize', () => {
-      resizeCanvas();
-      initParticles();
-    });
-
-    // Поддержка нажатия и касания
     function triggerExplosion() {
       btn.classList.remove('rebuild');
       btn.classList.add('explode');
@@ -242,11 +280,19 @@
     }
 
     btn.addEventListener('mouseenter', triggerExplosion);
-    btn.addEventListener('touchstart', triggerExplosion);
+    btn.addEventListener('touchstart', triggerExplosion, { passive: true });
 
     woowImage.addEventListener('click', () => {
       window.open('https://www.donationalerts.com/r/kissjons', '_blank');
     });
+
+    // === Автоматическое появление SVG каждые 10 секунд на 0.1 секунду ===
+    setInterval(() => {
+      woowImage.classList.add('woow-visible');
+      setTimeout(() => {
+        woowImage.classList.remove('woow-visible');
+      }, 100); // 0.1 секунда
+    }, 10000); // каждые 10 секунд
 
     initParticles();
     animate();
